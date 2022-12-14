@@ -20,9 +20,9 @@ function handleGetData(event) {
     url: `https://ergast.com/api/f1/${$year.val()}/constructors/${$team.val().replace(' ','_')}/results.json`
   }).then(
     (data) => {
-       teamData = data
-       debugger
-       render()
+       teamData = data;
+       renderDrivers();
+       renderRaceResults();
     },
     (error) => {
       console.log("bad request", error)
@@ -32,9 +32,23 @@ function handleGetData(event) {
   $team.val('');
 }
 
-function render() {
-    $driverA.text(teamData.MRData.RaceTable.Races[0].Results[0].Driver.givenName + " " + teamData.MRData.RaceTable.Races[0].Results[0].Driver.familyName);
-    $driverB.text(teamData.MRData.RaceTable.Races[0].Results[1].Driver.givenName + " " + teamData.MRData.RaceTable.Races[0].Results[1].Driver.familyName);
-    $a1.text(teamData.MRData.RaceTable.Races[0].Results[0].position);
-    $b1.text(teamData.MRData.RaceTable.Races[0].Results[1].position);
+function renderDrivers() {
+    let teamAndYear = teamData.MRData.RaceTable.Races[0]
+    $driverA.text(teamAndYear.Results[0].Driver.givenName + " " + teamAndYear.Results[0].Driver.familyName);
+    $driverB.text(teamAndYear.Results[1].Driver.givenName + " " + teamAndYear.Results[1].Driver.familyName);
+}
+
+function renderRaceResults() {
+    //iterate through the races and create rows in the table for each race
+    let races = teamData.MRData.RaceTable.Races
+    for (let i = 0; i < races.length; i++){
+
+        let $newRow = $(`<tr>
+        <td>Round ${i+1}</td>
+        <td class=${i+1}>${races[i].Results[0].position}</td>
+        <td class=${i+1}>${races[i].Results[1].position}</td>
+        </tr>`)
+
+        $('tbody').append($newRow);
+    }
   }
