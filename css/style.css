@@ -1,0 +1,5 @@
+table, thead, tbody, th, td {
+    border-style: solid;
+    padding: 2px;
+}
+
