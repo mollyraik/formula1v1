@@ -7,3 +7,10 @@ table, thead, tbody, th, td {
     padding: 2px;
 }
 
+.green {
+    background-color: rgba(66, 176, 38, 0.35);
+}
+
+.red {
+    background-color: rgba(255, 0, 0, 0.41);
+}
