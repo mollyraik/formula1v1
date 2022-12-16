@@ -18,11 +18,19 @@
   <body>
     <h1>Formula 1 v 1</h1>
     <h3>Teammate Head to Head Results</h3>
-    <form>
-        <input id="year" type="text" placeholder="Season"/>
-        <input id="team" type="text" placeholder="Constructor"/>
-        <input type="submit" value="Get Driver Stats" />
-    </form>
+    <div class="dropdown">
+        <button id="seasonBtn" class="dropbtn">Season</button>
+        <div id="seasonDropdown" class="dropdown-content scrollable-menu">
+          
+        </div>
+    </div>
+    <div class="dropdown">
+        <button id="teamBtn" class="dropbtn">Constructor</button>
+        <div id="teamDropdown" class="dropdown-content scrollable-menu">
+          
+        </div>
+    </div>
+    
     <h3 class="parameters"></h3>
     <main>
       <table>
