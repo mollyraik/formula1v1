@@ -10,7 +10,7 @@ let constructor = ''
     (data) => {
         data.MRData.SeasonTable.Seasons.forEach(function (elem){
             const $newListItem = $(`<li class='year'>${elem.season}</li>`);
-            $('#seasonDropdown').append($newListItem);
+            $('#seasonDropdown').prepend($newListItem);
         })
         const years = document.querySelector("#seasonDropdown");
         years.addEventListener("click", handleYearClick);
