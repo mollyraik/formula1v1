@@ -2,7 +2,7 @@
 
 >*“The rule of thumb in F1 is to beat your teammate.” – Nico Hülkenberg*
 
-Welcome to Formula 1 vs 1, a web application that compares teammate race results by year. 
+Welcome to Formula 1 vs 1, a web application that compares F1 teammate race results by year. 
 
 It can be difficult to compare driver talent in F1 because across the grid or across the years drivers are in different cars that may be faster or easier to handle than their competitors. The exception to this rule is teammates in a given year. These drivers work with the same car over the year and so comparing their results can give us insight into their relative talent to one another.
 
@@ -12,12 +12,14 @@ It can be difficult to compare driver talent in F1 because across the grid or ac
 - CSS
 - JavaScript
 - jQuery
+- GoogleFonts
 - Ergast Developer API
+- API-FORMULA-1, Rapid API
 
 ## Screenshots
 ---
 
->screenshots here
+![Imgur](https://i.imgur.com/APrSj09.png)
 
 ## Getting Started
 ---
