@@ -1,10 +1,49 @@
-body {
-    margin: 10px;
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web&display=swap');
+@font-face {
+    font-family: Formula1-Bold;
+    src: url(./Formula1-Bold.ttf);
 }
+@font-face {
+    font-family: Formula1-Regular;
+    src: url(./Formula1-Regular.ttf);
+}
+
+body {
+    font-family: 'Titillium Web', sans serif; 
+    
+}
+
+h1, h2, h3, main, div {
+    padding-left: 20px;
+}
+
+h1 {
+    display: flex;
+    align-items: center;
+    font-family: Formula1-Bold;
+    background-color: rgb(247,31,21);
+    width: 100%;
+    color: white;
+    margin-top: 0;
+    height: 75px;
+
+}
+
+h2, .parameters {
+    font-family: Formula1-Regular;
+}
+
 
 table, thead, tbody, th, td {
     border-style: solid;
     padding: 2px;
+    font-size: 16px;
+    text-align: center;
+}
+
+th, td {
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
 .green {
@@ -17,7 +56,7 @@ table, thead, tbody, th, td {
 
 /* Dropdown Button */
 .dropbtn {
-    background-color: #3498DB;
+    background-color: rgb(247,31,21);
     color: white;
     padding: 16px;
     font-size: 16px;
@@ -27,7 +66,7 @@ table, thead, tbody, th, td {
   
   /* Dropdown button on hover & focus */
   .dropbtn:hover, .dropbtn:focus {
-    background-color: #2980B9;
+    background-color: black;
   }
   
   /* The container <div> - needed to position the dropdown content */
@@ -54,7 +93,7 @@ table, thead, tbody, th, td {
   
   /* Links inside the dropdown */
   .dropdown-content li {
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-family: 'Titillium Web', sans serif;
     color: black;
     padding: 12px 16px;
     text-decoration: none;

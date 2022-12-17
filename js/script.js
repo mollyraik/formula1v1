@@ -96,13 +96,6 @@ function handleTeamClick(event) {
 }
 
 
-
-
-
-
-// // const $year = $('#year')
-// // const $team = $('#team')
-
 const $heading = $('.parameters')
 const $driverA = $('#driverA')
 const $driverB = $('#driverB')
@@ -121,25 +114,26 @@ function renderRaceResults() {
     let races = teamData.MRData.RaceTable.Races
     for (let i = 0; i < races.length; i++){
         // debugger
+        
         if (`${races[i].Results[0].Driver.givenName} ${races[i].Results[0].Driver.familyName}` === $driverA.text()){
             let $newRow = $(`<tr class='rounds'>
                 <td>${i+1}</td>
                 <td>${races[i].raceName}</td>
-                <td class='green'>${races[i].Results[0].positionText}</td>
-                <td class='red'>${races[i].Results[1].positionText}</td>
+                <td class='green result'>${races[i].Results[0].positionText}</td>
+                <td class='red result'>${races[i].Results[1].positionText}</td>
                 </tr>`)
             $('tbody').append($newRow);
         } else {
             let $newRow = $(`<tr class='rounds'>
                 <td>${i+1}</td>
                 <td>${races[i].raceName}</td>
-                <td class='red'>${races[i].Results[1].positionText}</td>
-                <td class='green'>${races[i].Results[0].positionText}</td>
+                <td class='red result'>${races[i].Results[1].positionText}</td>
+                <td class='green result'>${races[i].Results[0].positionText}</td>
                 </tr>`)
             $('tbody').append($newRow);
         }
-        // if ()
     }
+    
   }
 
 function renderHeading () {
