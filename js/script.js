@@ -4,6 +4,16 @@ toggle between hiding and showing the dropdown content */
 let season = ''
 let constructor = ''
 
+const $heading = $('.parameters')
+const $driverA = $('#driverA')
+const $driverB = $('#driverB')
+const $picA = $('#picA')
+const $picB = $('#picB')
+const $p = $('p')
+
+const $a1 = $('#a1')
+const $b1 = $('#b1')
+
  $.ajax({
     url: `https://ergast.com/api/f1/seasons.json?limit=100`
     }).then(
@@ -85,7 +95,9 @@ function handleTeamClick(event) {
             teamData = data;
             renderHeading ()
             renderDrivers();
+            renderPhotos();
             renderRaceResults();
+            
         }),
         (error) => {
             console.log("bad request", error)
@@ -95,18 +107,10 @@ function handleTeamClick(event) {
         return constructor;
 }
 
-
-const $heading = $('.parameters')
-const $driverA = $('#driverA')
-const $driverB = $('#driverB')
-
-const $a1 = $('#a1')
-const $b1 = $('#b1')
-
 function renderDrivers() {
     let teamAndYear = teamData.MRData.RaceTable.Races[0]
     $driverA.text(teamAndYear.Results[0].Driver.givenName + " " + teamAndYear.Results[0].Driver.familyName);
-    $driverB.text(teamAndYear.Results[1].Driver.givenName + " " + teamAndYear.Results[1].Driver.familyName);
+    $driverB.text(teamAndYear.Results[1].Driver.givenName + " " + teamAndYear.Results[1].Driver.familyName);    
 }
 
 function renderRaceResults() {
@@ -140,6 +144,49 @@ function renderHeading () {
    $heading.text(`${teamData.MRData.RaceTable.Races[0].Results[0].Constructor.name}: ${teamData.MRData.RaceTable.season}`) 
   }
 
+function renderPhotos () {
+    const picA = {
+        "async": true,
+        "crossDomain": true,
+        "url": `https://api-formula-1.p.rapidapi.com/drivers?search=${$driverA.text().replace(' ', '%20').normalize('NFD').replace(/[\u0300-\u036f]/g, "")}`,
+        "method": "GET",
+        "headers": {
+            "X-RapidAPI-Key": "ca04c4f827msh3772741c158fadcp18709ajsn877af2764e0a",
+            "X-RapidAPI-Host": "api-formula-1.p.rapidapi.com"
+        }
+    };
+
+    $.ajax(picA).done(function (data) {
+        //debugger;
+        if (data.response[0] === undefined){
+            $picA.attr('src', '').attr('alt', '');
+            return;
+        } else {
+        $picA.attr('src', data.response[0].image).attr('alt', $driverA.text());
+        }
+    });
+    
+    const picB = {
+        "async": true,
+        "crossDomain": true,
+        "url": `https://api-formula-1.p.rapidapi.com/drivers?search=${$driverB.text().replace(' ', '%20').normalize('NFD').replace(/[\u0300-\u036f]/g, "")}`,
+        "method": "GET",
+        "headers": {
+            "X-RapidAPI-Key": "ca04c4f827msh3772741c158fadcp18709ajsn877af2764e0a",
+            "X-RapidAPI-Host": "api-formula-1.p.rapidapi.com"
+        }
+    };
+    
+    $.ajax(picB).done(function (data) {
+        //debugger;
+        if (data.response[0] === undefined){
+            $picB.attr('src', '').attr('alt', '');
+            return;
+        } else {
+        $picB.attr('src', data.response[0].image).attr('alt', $driverB.text());
+        }
+    });
+}
 
 // code to figure out who are the main drivers for each team in the event that the team had subs
 
