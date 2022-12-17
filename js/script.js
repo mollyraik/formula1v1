@@ -52,8 +52,9 @@ function handleYearClick(event) {
         }).then(
         (data) => {
             data.MRData.ConstructorTable.Constructors.forEach(function (elem){
-                const $newListItem = $(`<li class='team'>${elem.name}</li>`);
-                $('#teamDropdown').append($newListItem)
+                const $newListItem = $(`<li class='team' id='${elem.constructorId}'>${elem.name}</li>`);
+                $('#teamDropdown').append($newListItem);
+
             })
             const teams = document.querySelector("#teamDropdown");
             teams.addEventListener("click", handleTeamClick);
@@ -63,6 +64,7 @@ function handleYearClick(event) {
             console.log("bad request", error)
         }
         season = event.target.textContent;
+        $('#seasonBtn').text(season);
         return season;
     }
 
@@ -77,7 +79,7 @@ function handleTeamClick(event) {
     $heading.text('');
 
     $.ajax({
-        url: `https://ergast.com/api/f1/${season}/constructors/${event.target.textContent.replace(' ','_')}/results.json?limit=100`
+        url: `https://ergast.com/api/f1/${season}/constructors/${event.target.id}/results.json?limit=100`
         }).then(
         (data) => {
             teamData = data;
@@ -89,6 +91,7 @@ function handleTeamClick(event) {
             console.log("bad request", error)
         }
         constructor = event.target.textContent;
+        $('#teamBtn').text(constructor);
         return constructor;
 }
 
@@ -120,21 +123,22 @@ function renderRaceResults() {
         // debugger
         if (`${races[i].Results[0].Driver.givenName} ${races[i].Results[0].Driver.familyName}` === $driverA.text()){
             let $newRow = $(`<tr class='rounds'>
-                <td>Round ${i+1}</td>
+                <td>${i+1}</td>
                 <td>${races[i].raceName}</td>
-                <td class='green'>${races[i].Results[0].position}</td>
-                <td class='red'>${races[i].Results[1].position}</td>
+                <td class='green'>${races[i].Results[0].positionText}</td>
+                <td class='red'>${races[i].Results[1].positionText}</td>
                 </tr>`)
             $('tbody').append($newRow);
         } else {
             let $newRow = $(`<tr class='rounds'>
-                <td>Round ${i+1}</td>
+                <td>${i+1}</td>
                 <td>${races[i].raceName}</td>
-                <td class='red'>${races[i].Results[1].position}</td>
-                <td class='green'>${races[i].Results[0].position}</td>
+                <td class='red'>${races[i].Results[1].positionText}</td>
+                <td class='green'>${races[i].Results[0].positionText}</td>
                 </tr>`)
             $('tbody').append($newRow);
         }
+        // if ()
     }
   }
 
