@@ -97,6 +97,7 @@ function handleTeamClick(event) {
             renderDrivers();
             renderPhotos();
             renderRaceResults();
+            renderSummary();
             
         }),
         (error) => {
@@ -123,16 +124,16 @@ function renderRaceResults() {
             let $newRow = $(`<tr class='rounds'>
                 <td>${i+1}</td>
                 <td>${races[i].raceName}</td>
-                <td class='green result'>${races[i].Results[0].positionText}</td>
-                <td class='red result'>${races[i].Results[1].positionText}</td>
+                <td class='green result a'>${races[i].Results[0].positionText}</td>
+                <td class='red result b'>${races[i].Results[1].positionText}</td>
                 </tr>`)
             $('tbody').append($newRow);
         } else {
             let $newRow = $(`<tr class='rounds'>
                 <td>${i+1}</td>
                 <td>${races[i].raceName}</td>
-                <td class='red result'>${races[i].Results[1].positionText}</td>
-                <td class='green result'>${races[i].Results[0].positionText}</td>
+                <td class='red result a'>${races[i].Results[1].positionText}</td>
+                <td class='green result b'>${races[i].Results[0].positionText}</td>
                 </tr>`)
             $('tbody').append($newRow);
         }
@@ -186,6 +187,19 @@ function renderPhotos () {
         $picB.attr('src', data.response[0].image).attr('alt', $driverB.text());
         }
     });
+}
+
+function renderSummary() {
+    let $winA = $('.green.a');
+    let $winB = $('.green.b');
+    // debugger;
+    if ($winA.length > $winB.length){
+        $('#summary').text(`${$driverA.text()} placed higher than ${$driverB.text()} in ${$winA.length} of ${$('.rounds').length} races.`)
+    } else if ($winB.length > $winA.length){
+        $('#summary').text(`${$driverB.text()} placed higher than ${$driverA.text()} in ${$winB.length} of ${$('.rounds').length} races.`)
+    } else {
+        $('#summary').text(`${$driverA.text()} and ${$driverB.text()} beat one another in an equal number of races.`)
+    }
 }
 
 // code to figure out who are the main drivers for each team in the event that the team had subs
