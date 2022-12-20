@@ -5,14 +5,16 @@ let season = ''
 let constructor = ''
 
 const $heading = $('.parameters')
-const $driverA = $('#driverA')
-const $driverB = $('#driverB')
+const $driverA = $('.driverA')
+const $driverB = $('.driverB')
 const $picA = $('#picA')
 const $picB = $('#picB')
 const $p = $('p')
 
 const $a1 = $('#a1')
 const $b1 = $('#b1')
+
+$('.versus').hide();
 
  $.ajax({
     url: `https://ergast.com/api/f1/seasons.json?limit=100`
@@ -57,6 +59,7 @@ function handleYearClick(event) {
     teams.forEach(team => {
     team.remove();
     })
+    $('#teamBtn').text('Loading...')
     $.ajax({
         url: `https://ergast.com/api/f1/${event.target.textContent}/constructors.json?limit=100`
         }).then(
@@ -66,6 +69,7 @@ function handleYearClick(event) {
                 $('#teamDropdown').append($newListItem);
 
             })
+            $('#teamBtn').text('Constructors')
             const teams = document.querySelector("#teamDropdown");
             teams.addEventListener("click", handleTeamClick);
             
@@ -118,9 +122,8 @@ function renderRaceResults() {
     //iterate through the races and create rows in the table for each race
     let races = teamData.MRData.RaceTable.Races
     for (let i = 0; i < races.length; i++){
-        // debugger
         
-        if (`${races[i].Results[0].Driver.givenName} ${races[i].Results[0].Driver.familyName}` === $driverA.text()){
+        if (`${races[i].Results[0].Driver.givenName} ${races[i].Results[0].Driver.familyName}` === $driverA.first().text()){
             let $newRow = $(`<tr class='rounds'>
                 <td>${i+1}</td>
                 <td>${races[i].raceName}</td>
@@ -149,7 +152,7 @@ function renderPhotos () {
     const picA = {
         "async": true,
         "crossDomain": true,
-        "url": `https://api-formula-1.p.rapidapi.com/drivers?search=${$driverA.text().replace(' ', '%20').normalize('NFD').replace(/[\u0300-\u036f]/g, "")}`,
+        "url": `https://api-formula-1.p.rapidapi.com/drivers?search=${$driverA.first().text().replace(' ', '%20').normalize('NFD').replace(/[\u0300-\u036f]/g, "")}`,
         "method": "GET",
         "headers": {
             "X-RapidAPI-Key": "ca04c4f827msh3772741c158fadcp18709ajsn877af2764e0a",
@@ -163,14 +166,14 @@ function renderPhotos () {
             $picA.attr('src', '').attr('alt', '');
             return;
         } else {
-        $picA.attr('src', data.response[0].image).attr('alt', $driverA.text());
+        $picA.attr('src', data.response[0].image).attr('alt', $driverA.first().text());
         }
     });
     
     const picB = {
         "async": true,
         "crossDomain": true,
-        "url": `https://api-formula-1.p.rapidapi.com/drivers?search=${$driverB.text().replace(' ', '%20').normalize('NFD').replace(/[\u0300-\u036f]/g, "")}`,
+        "url": `https://api-formula-1.p.rapidapi.com/drivers?search=${$driverB.first().text().replace(' ', '%20').normalize('NFD').replace(/[\u0300-\u036f]/g, "")}`,
         "method": "GET",
         "headers": {
             "X-RapidAPI-Key": "ca04c4f827msh3772741c158fadcp18709ajsn877af2764e0a",
@@ -187,6 +190,8 @@ function renderPhotos () {
         $picB.attr('src', data.response[0].image).attr('alt', $driverB.text());
         }
     });
+
+    $('.versus').show();
 }
 
 function renderSummary() {
@@ -194,20 +199,20 @@ function renderSummary() {
     let $winB = $('.green.b');
     // debugger;
     if ($winA.length > $winB.length){
-        $('#summary').text(`${$driverA.text()} placed higher than ${$driverB.text()} in ${$winA.length} of ${$('.rounds').length} races.`)
+        $('#summary').text(`${$driverA.first().text()} placed higher than ${$driverB.first().text()} in ${$winA.length} of ${$('.rounds').length} races.`)
     } else if ($winB.length > $winA.length){
-        $('#summary').text(`${$driverB.text()} placed higher than ${$driverA.text()} in ${$winB.length} of ${$('.rounds').length} races.`)
+        $('#summary').text(`${$driverB.first().text()} placed higher than ${$driverA.first().text()} in ${$winB.length} of ${$('.rounds').length} races.`)
     } else {
-        $('#summary').text(`${$driverA.text()} and ${$driverB.text()} beat one another in an equal number of races.`)
+        $('#summary').text(`${$driverA.first().text()} and ${$driverB.first().text()} beat one another in an equal number of races.`)
     }
 }
 
-// code to figure out who are the main drivers for each team in the event that the team had subs
+// // code to figure out who are the main drivers for each team in the event that the team had subs
 
-// function searchForMainDrivers () {
+// function searchForMainDrivers (data, arr) {
 //     //debugger
-//     teamData.MRData.DriverTable.Drivers.forEach(function (elem){
-//         let driverCheck = elem.driverId
+//     // teamData.MRData.DriverTable.Drivers.forEach(function (elem){
+//     //     let driverCheck = elem.driverId
 //         $.ajax({
 //             url: `https://ergast.com/api/f1/${$year.val()}/drivers/${driverCheck}/results.json?limit=30`
 //           }).then(
@@ -221,17 +226,21 @@ function renderSummary() {
 // }
 
 
-//     // $.ajax({
-//     //     url: `https://ergast.com/api/f1/${$year.val()}/constructors/${$team.val().replace(' ','_')}/drivers.json?limit=10`
-//     //   }).then(
-//     //     (data) => {
-//     //        teamData = data;
-//     //        if (teamData.MRData.DriverTable.Drivers.length > 2){
-//     //         searchForMainDrivers();
-//     //        } else {
-//     //         return;}
-//     //     },
-//     //     (error) => {
-//     //       console.log("bad request", error)
-//     //     }
-//     //   )
+//     $.ajax({
+//         url: `https://ergast.com/api/f1/${$year.val()}/constructors/${$team.val().replace(' ','_')}/drivers.json?limit=10`
+//       }).then(
+//         (data) => {
+//            driverData = data;
+//            if (driverData.MRData.DriverTable.Drivers.length > 2){
+//             let driverArray = [];
+//             driverData.MRData.DriverTable.Drivers.forEach(function (elem){
+//                 driverArray.push(elem.driverId)
+//             })
+//             searchForMainDrivers(driverData, driverArray);
+//            } else {
+//             return;}
+//         },
+//         (error) => {
+//           console.log("bad request", error)
+//         }
+//       )
